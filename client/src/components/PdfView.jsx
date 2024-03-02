@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf';
+import {Document, Page} from 'react-pdf'
 import ConfirmDialog from './ConfirmDialog';
 import Loading from './Loading';
 import { STATIC_PATH } from '../axios';
