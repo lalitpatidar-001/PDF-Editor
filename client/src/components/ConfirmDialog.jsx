@@ -7,6 +7,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Slide } from '@mui/material';
 
+/*
+    ConfirmDialog Component :
+        * This component is responsible for rendering Instruction related to re-arrange pdf pages options
+        * Uses MUI React Dialog to display component conditionaly if openDialog is true 
+*/
+
 const ConfirmDialog = ({openDialog ,setOpenDialog}) => {
 
     const handleClose = () => {

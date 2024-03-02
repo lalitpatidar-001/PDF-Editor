@@ -52,9 +52,24 @@ const  getPdf = async (req,res)=>{
     }
 }
 
+const removePdf = async(req,res)=>{
+    const {id} = req.params;
+    try{
+        const pdf = Pdf.findById(id);
+        if(!pdf) return res.status(404).json({message:"pdf not found"})
+        await Pdf.findByIdAndDelete(id);
+        return res.status(200).json({message:"pdf deleted successfully"});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message:"internal server error"});
+    }
+}
+
 module.exports = {
     uploadNewPdf,
     getAllPdfs,
-    getPdf
+    getPdf,
+    removePdf,
+
     
 }

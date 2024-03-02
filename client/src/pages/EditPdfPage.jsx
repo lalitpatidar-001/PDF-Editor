@@ -5,10 +5,10 @@ import { pdfjs } from 'react-pdf';
 
 /*
     EditPdfPage Component:
-    This component renders the page for editing a PDF document.
-    It fetches the ID parameter from the URL using the useParams hook.
-    Sets the worker source for PDF.js to enable PDF rendering.
-    Renders the EditPdf component passing the ID of the PDF document to be edited.
+       * This component renders the page for editing a PDF document.
+       * It fetches the ID parameter from the URL using the useParams hook.
+       * Sets the worker source for PDF.js to enable PDF rendering.
+       * Renders the EditPdf component passing the ID of the PDF document to be edited.
 */
 
 const EditPdfPage = () => {

@@ -11,6 +11,19 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { signInUser } from "../../../../redux/slices/userSlice";
 
+/*
+ * Login Component:
+ * This component provides a login form for users to authenticate themselves.
+ * It utilizes Input and Button components for form inputs and submission.
+ * Upon successful login, it dispatches a Redux action to update the user state.
+ * If login fails, it displays appropriate error messages using toast notifications.
+ * Features:
+ * - Form inputs for username/email and password
+ * - Error handling for login failures
+ * - Dispatching Redux action on successful login
+ * - Links for redirecting to registration page for new users
+ */
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,7 +91,7 @@ const Login = () => {
           />
           <Button type="submit" title="Login" fullWidth={true} />
         </form>
-        <span>Forget email or password</span>
+        {/* <span>Forget email or password</span> */}
 
         <AuthActions
           text="New User? "

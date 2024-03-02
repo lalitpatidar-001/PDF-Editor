@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+/*
+    userSlice:
+        * Store user data in redux store for authentication
+        * Provide actions to change store
+*/
 const initialState ={
     isLoggedIn:false,
     id:null,

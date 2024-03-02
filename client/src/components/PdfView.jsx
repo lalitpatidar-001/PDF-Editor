@@ -43,11 +43,13 @@ function PdfView({ pdf }) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    if(loading){
+        return <Loading text="Loading Pdf..."/>
+    }
+
     return (
         <>
         {
-            loading ? <Loading text="Loading Pdf..."/>
-            :
             <div className='mt-1 h-[calc(100vh-60px)] w-full'>
             <Document file={pdfPath} 
             onLoadSuccess={onDocumentLoadSuccess}

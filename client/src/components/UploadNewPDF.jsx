@@ -5,6 +5,7 @@ import axiosInstance from '../axios';
 import { X } from "phosphor-react"
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePdf } from '../redux/slices/pdfSlice';
+import Loading from './Loading';
 
 /*
     UploadNewPdf Component:
@@ -17,6 +18,7 @@ import { updatePdf } from '../redux/slices/pdfSlice';
 const UploadNewPDF = () => {
     const [pdfFile, setPdfFile] = useState(null);
     const dispatch = useDispatch();
+    const [loading ,setLoading] = useState(false);
     const { id } = useSelector(state => state.user)
 
     // handel file change and validate file type
@@ -34,6 +36,7 @@ const UploadNewPDF = () => {
     const handleClickUploadPDF = async () => {
         if (pdfFile) {
             try {
+                setLoading(true);
                 const formData = new FormData();
                 formData.append("pdfFile", pdfFile)
                 const response = await axiosInstance.post(`/pdf/upload/${id}`,
@@ -43,7 +46,7 @@ const UploadNewPDF = () => {
                             "Content-Type": "mulitpart/form-data"
                         }
                     });
-                console.log(response)
+
                 if (response.status === 201) {
                     toast.success("PDF file uploaded successfully");
                     // adding pdf to redux store
@@ -61,7 +64,13 @@ const UploadNewPDF = () => {
                     toast.error("Something went wrong on server")
                 }
             }
+            finally{
+                setLoading(false);
+            }
         }
+    }
+    if(loading){
+        return <Loading text="Uploading pdf..."/>
     }
 
     return (
@@ -77,7 +86,6 @@ const UploadNewPDF = () => {
 
                 <label className='cursor-pointer' htmlFor='pdf-input'>
                 {pdfFile ?
-                        {/* display pdf preview if exist */}
                         (<embed
                             className='h-[150px] w-[150px] '
                             src={URL.createObjectURL(pdfFile)}
@@ -85,7 +93,6 @@ const UploadNewPDF = () => {
                         />) 
                         :
                         <div className='relative'>
-                        {/* display pdf image if no file choosed */}
                         <img className='h-[150px] w-[150px] ' src={PDFIcon} />
                         <span className='absolute text-xl text-red-600  font-bold left-[25px] -bottom-2'>Click here</span>
                         </div>

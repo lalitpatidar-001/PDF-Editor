@@ -1,5 +1,11 @@
 import  {createSlice} from "@reduxjs/toolkit";
 
+/*
+    pdfSlice :
+        *store user's all  saved pdf and generated pdf 
+        * provide action to change pdf store
+*/
+
 const initialState = {
     pdf:[],
     generatedPdf:null
@@ -17,11 +23,14 @@ const pdfSlice = createSlice({
             },
             addGeneratedPdf:(state,action)=>{
                 state.generatedPdf = action.payload.generatedPdf;
+            },
+            removePdf:(state,action)=>{
+                state.pdf = state.pdf.filter(pdf=> pdf._id !== action.payload.id);
             }
         }
 });
 
 
-export const {getAllPdf , updatePdf ,addGeneratedPdf} = pdfSlice.actions;
+export const {getAllPdf , updatePdf ,addGeneratedPdf,removePdf} = pdfSlice.actions;
 
 export default pdfSlice.reducer;

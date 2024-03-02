@@ -8,10 +8,11 @@ import Loading from '../components/Loading';
 
 /*
     SinglePdfPage Component:
-    This component renders a single PDF document retrieved from the server based on the provided ID.
-    It displays the PDF viewer component (PdfView) to view the PDF content.
-    If the PDF is not found or there is an error while fetching it, it displays an error message and redirects the user to the home page.
-    It also provides an option to edit the PDF by navigating to the edit page for the PDF.
+        * This component renders a single PDF document retrieved from the server based on the provided ID.
+        * It displays the PDF viewer component (PdfView) to view the PDF content.
+        * If the PDF is not found or there is an error while fetching it, it displays an error message and redirects 
+          the user to the home page.
+        * It also provides an option to edit the PDF by navigating to the edit page for the PDF.
 */
 
 const SinglePdfPage = () => {
@@ -53,16 +54,11 @@ const SinglePdfPage = () => {
     }, [id]);
 
 
+    if(loading) return <Loading text="Loading Pdf..."/>
 
     return (
         <>
-
-      
         {
-            loading?
-            <Loading/>
-            :
-
         <div className='mt-[51px] flex flex-col items-center overflow-hidden bg-[#dddddd] relative'>
             <div className='fixed top-[48px] z-40 flex gap-2  p-1 w-full  justify-end'>
             {/* redired to edit pdf page */}

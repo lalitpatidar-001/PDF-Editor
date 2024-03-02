@@ -1,5 +1,14 @@
 import React from 'react'
 
+/*
+ * Input Component:
+ * This component represents an input field with customizable properties such as id, name, type, label, placeholder, value, and onChange function.
+ * It renders an input field with a specified label, type, placeholder, and styling.
+ * Features:
+ * - Customizable input field properties (id, name, type, label, placeholder, value, onChange, required)
+ * - Styling with borders and rounded corners
+ */
+
 const Input = ({id,name,type,label,placeholder,value,onChange,required}) => {
   return (
     <div>

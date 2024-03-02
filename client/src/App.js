@@ -9,6 +9,12 @@ import DashboardLayout from './layout/DashboardLayout';
 import SinglePdfPage from './pages/SinglePdfPage';
 import EditPdfPage from './pages/EditPdfPage';
 
+/*
+  App.js component:
+    * Provide routing 
+    * DashboardLayout and AuthLayout are providing nested routes
+    * render Toaster for feedback 
+*/
 
 function App() {
   return (

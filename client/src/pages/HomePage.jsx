@@ -2,6 +2,12 @@ import React from 'react'
 import UploadNewPDF from '../components/UploadNewPDF'
 import AllPdf from '../components/AllPdf'
 
+/*
+  HomePage component:
+    * First component user see if loggedin
+    * Render a option to upload new pdf 
+    * Render all user's pdf from server
+*/
 const HomePage = () => {
   return (
     <>

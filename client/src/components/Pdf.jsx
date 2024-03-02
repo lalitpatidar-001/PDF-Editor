@@ -1,13 +1,51 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import pdfIcon from "../assets/pdf-icon.png";
 import { format } from "timeago.js"
 import { Link } from 'react-router-dom';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import axiosInstance from '../axios';
+import {toast} from "react-hot-toast"
+import { useDispatch } from 'react-redux';
+import { removePdf } from '../redux/slices/pdfSlice';
+import Loading from './Loading';
 
+/*
+    Pdf Component:
+        * Responsible to render all accepted props pdf of user
+        * onclick of particular pdf redirect to SinglePdfpage
+        * Provide a delete button to delete particular pdf
+*/
 
-const Pdf = ({ name, createdAt,_id }) => {
+const Pdf = ({ name, createdAt, _id }) => {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [loading , setLoading] = useState(false);
+    const dispatch = useDispatch();
+
+    // deleting a pdf
+    const handleClickDeletePdf = async()=>{ 
+        try{
+            setLoading(true)
+            const response = await axiosInstance.delete(`/pdf/${_id}`);
+            console.log(response)
+            if(response.status === 200){
+                toast.success("PDF Deleted successfully");
+                dispatch(removePdf({id:_id})) // removing from strore
+                setMenuOpen(false)
+            }
+        }catch(error){
+            console.log(error);
+        }
+        finally{
+            setLoading(false)
+        }
+    }
+
+    if(loading){
+        return <Loading text="Deleting..."/>
+    }
 
     return (
-        <>
+        <div className='relative'>
 
             <Link to={`/pdf/${_id}`}>
 
@@ -24,7 +62,15 @@ const Pdf = ({ name, createdAt,_id }) => {
                     <span className='text-[10px]  self-end pr-1 text-gray-500 '>{format(createdAt)}</span>
                 </div>
             </Link>
-        </>
+            {/* vertical dot menu toggle */}
+            <div onClick={()=>setMenuOpen(!menuOpen)} className='absolute top-0 right-0 cursor-pointer'><MoreVertIcon /></div>
+
+            {/* menu list - delete button */}
+            {menuOpen &&
+                <div className='absolute top-0 right-7 flex flex-col  w-fit  bg-white shadow-lg rounded'>
+                    <span className='cursor-pointer p-1 rounded hover:bg-gray-300' onClick={handleClickDeletePdf}>delete</span>
+                </div>}
+        </div>
     )
 }
 

@@ -10,23 +10,47 @@ import ConfirmDialog from './ConfirmDialog';
 import EditNavbar from './EditNavbar';
 import Loading from './Loading';
 
+/*
+    EditPdf Component:
+    This component allows users to edit and manipulate PDF files. 
+    It provides functionalities like selecting pages, rearranging them, and generating a new PDF based on the user's selection.
+    Users can also save the generated PDF back to the server.
+    The component utilizes react-pdf and pdf-lib libraries for PDF manipulation.
+    It integrates with Redux for state management and axios for HTTP requests.
+    Features:
+    - Selecting pages from the original PDF.
+    - Rearranging the order of selected pages.
+    - Generating a new PDF based on the selected pages.
+    - Previewing and navigating through the generated PDF.
+    - Saving the generated PDF back to the server.
+*/
+
 const EditPdf = ({ id }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const { id: userId } = useSelector(state => state.user)
+
     const [openDialog, setOpenDialog] = useState(false)
     const [isInSequence, setIsInSequence] = useState("select");
+
     const [pdf, setPdf] = useState(null);
     const [name, setName] = useState(null)
+
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [selectedPages, setSelectedPages] = useState([]);
+
+    const [generatedPdfUrl, setGeneratedPdfUrl] = useState(null);
     const [generatedPdf, setGeneratedPdf] = useState(null);
+
     const [isGenerating, setIsGenerating] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const [pageWidth, setPageWidth] = useState(window.innerWidth); // State to hold page width
 
 
-    // sort selected pages
+    // sort selected pages if user choose "arrange by order"
     const sortPages = (selectedPages) => {
         const sortedPages = selectedPages.sort((a, b) => a - b);
         setSelectedPages(sortedPages);
@@ -66,6 +90,7 @@ const EditPdf = ({ id }) => {
     // saving generated pdf to server
     const handlePDFSaveClick = async () => {
         try {
+            setLoading(true)
             if (!generatedPdf) {
                 console.error('No PDF data available to save.');
                 return;
@@ -91,11 +116,14 @@ const EditPdf = ({ id }) => {
                 toast.error("something went wrong");
             }
         }
+        finally{
+            setLoading(false)
+        }
     }
 
 
 
-    // handle click for selected pages 
+    // handle checkbox  click for selected pages 
     const handleCheckBoxClick = (index) => {
         console.log(index)
         if (selectedPages.includes(index)) {
@@ -132,7 +160,8 @@ const EditPdf = ({ id }) => {
             const pdfBlob = new Blob([newPdfBytes], { type: 'application/pdf' });
             const pdfUrl = URL.createObjectURL(pdfBlob);
             toast.success("Pdf generated successfully")
-            setGeneratedPdf(pdfUrl);
+            setGeneratedPdfUrl(pdfUrl);
+            setGeneratedPdf(pdfBlob)
         } catch (error) {
             console.error('Error fetching PDF:', error);
             toast.error("error in generating extracted pdf, try again");
@@ -145,6 +174,10 @@ const EditPdf = ({ id }) => {
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
     }
+
+    if(loading) return <Loading text="Uploading Generated Pdf..."/>
+
+
     return (
         <>
             <div className='relative'>
@@ -159,11 +192,13 @@ const EditPdf = ({ id }) => {
                         handleSequenceChange={handleSequenceChange}
                         setOpenDialog={setOpenDialog}
                         handlePDFSaveClick={handlePDFSaveClick}
-                        generatedPdf={generatedPdf}
+                        generatedPdfUrl={generatedPdfUrl}
                         generateNewPdf={generateNewPdf}
-                        name={name}
                         setGeneratedPdf={setGeneratedPdf}
+                        name={name}
+                        setGeneratedPdfUrl={setGeneratedPdfUrl}
                         setSelectedPages={setSelectedPages}
+                        generatedPdf={generatedPdf}
                     />}
 
                 {!generatedPdf
@@ -208,7 +243,7 @@ const EditPdf = ({ id }) => {
                             
                             <div className='h-screen mt-[30px]'>
                             {/* display newly generated pdf if exist */}
-                            <Document file={generatedPdf} onLoadSuccess={onDocumentLoadSuccess}>
+                            <Document file={generatedPdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
                                 <span className='text-sm font-bold text-gray-600'>
                                     Pages {numPages}
                                 </span>

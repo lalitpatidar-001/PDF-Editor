@@ -1,6 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+/*
+ * AuthActions Component:
+ * This component provides additional actions related to authentication, such as navigating to other authentication-related pages.
+ * It displays a horizontal line with "Or" text in between, followed by a link to another authentication-related page.
+ * Features:
+ * - Displaying a horizontal line with "Or" text in between
+ * - Providing a link to another authentication-related page
+ */
+
 const AuthActions = ({text,path, pageName}) => {
   return (
     <div className='w-full'>

@@ -5,6 +5,19 @@ import AuthActions from "../utils/AuthActions"
 import toast from "react-hot-toast";
 import axiosInstance from "../../../../axios";
 
+/*
+ * Register Component:
+ * This component provides a registration form for new users to sign up.
+ * It utilizes Input and Button components for form inputs and submission.
+ * Upon successful registration, it displays a success message using toast notifications.
+ * If registration fails, it displays appropriate error messages using toast notifications.
+ * Features:
+ * - Form inputs for full name, email, password, and confirm password
+ * - Error handling for registration failures
+ * - Toast notifications for success and error messages
+ * - Links for redirecting to the login page for existing users
+ */
+
 const  Register = () => {
 
   const [formData,setFormData] = useState({
@@ -15,14 +28,11 @@ const  Register = () => {
   })
 
   const handleOnChange=(e)=>{
-    const{
-      name,value
-    }= e.target
+    const{name,value}= e.target
     setFormData({...formData,[name]:value})
   }
   const handleFormSubmit = async (e)=>{
     e.preventDefault()
-    
       try {
         const response = await axiosInstance.post("/auth/register",formData)
         console.log(response)
