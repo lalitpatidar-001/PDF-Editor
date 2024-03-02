@@ -27,6 +27,7 @@ import { signInUser } from "../../../../redux/slices/userSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading , setLoading] = useState(false)
   const [formData,setFormData] = useState({
     email:"",
     password:""
@@ -35,22 +36,19 @@ const Login = () => {
 
   const handleChangeForm =(e)=>{
     const {name,value}=e.target;
-    console.log("name")
     setFormData(prev=>({...prev, [name]:value}))
-    console.log(formData)
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true)
       const response = await axiosInstance.post("/auth/login",formData);
-      console.log(response)
       if(response.status===200){
         toast.success("Logged In Successfully")
         dispatch(signInUser({id:response.data.data._id , email:response.data.data.email}))
       }
     } catch (error) {
-      console.error("Login failed:", error);
       const data=error.response.data
       const status = error.response.status
       if(status===404){
@@ -62,6 +60,9 @@ const Login = () => {
         toast.error("something went wrong on server")
       }
 
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -80,6 +81,7 @@ const Login = () => {
             name="email"
             placeholder="username or email"
             label="User Name"
+            required={true}
           />
           <Input
             onChange={handleChangeForm}
@@ -88,8 +90,9 @@ const Login = () => {
             name="password"
             placeholder="password"
             label="Password"
+            required={true}
           />
-          <Button type="submit" title="Login" fullWidth={true} />
+          <Button  type="submit" title="Login" fullWidth={true} loading={loading} />
         </form>
         {/* <span>Forget email or password</span> */}
 

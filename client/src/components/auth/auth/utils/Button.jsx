@@ -1,4 +1,5 @@
 import React from 'react'
+import Loading from '../../../Loading'
 
 /*
  * Button Component:
@@ -10,10 +11,15 @@ import React from 'react'
  * - Customizable button title
  */
 
-const Button= ({type,fullWidth,title}) => {
+const Button= ({type,fullWidth,title , loading}) => {
   return (
     <div>
-      <button type={type} className={`${fullWidth ? "w-full" : "w-fit" } bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 `}>{title}</button>
+      <button disabled={loading} type={type} 
+      className={`${fullWidth ? "w-full" : "w-fit" }
+      ${loading?"opacity-50 bg-gray-400":""}
+       bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 `}>
+       {loading ? <Loading text="" fit={true}/> : title}
+       </button>
     </div>
   )
 }

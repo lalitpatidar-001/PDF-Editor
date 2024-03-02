@@ -26,14 +26,13 @@ const Pdf = ({ name, createdAt, _id }) => {
         try{
             setLoading(true)
             const response = await axiosInstance.delete(`/pdf/${_id}`);
-            console.log(response)
             if(response.status === 200){
                 toast.success("PDF Deleted successfully");
                 dispatch(removePdf({id:_id})) // removing from strore
                 setMenuOpen(false)
             }
         }catch(error){
-            console.log(error);
+            toast.success("something went wrong")
         }
         finally{
             setLoading(false)
@@ -41,7 +40,7 @@ const Pdf = ({ name, createdAt, _id }) => {
     }
 
     if(loading){
-        return <Loading text="Deleting..."/>
+        return <Loading text="Deleting..." />
     }
 
     return (

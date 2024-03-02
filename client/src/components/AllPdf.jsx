@@ -4,6 +4,7 @@ import axiosInstance from '../axios'
 import { useDispatch, useSelector } from 'react-redux';
 import {getAllPdf } from "../redux/slices/pdfSlice"
 import Loading from './Loading';
+import toast from 'react-hot-toast';
 
 /*
  * AllPdf Component:
@@ -27,11 +28,10 @@ const AllPdf = () => {
       try {
         setLoading(true)
         const response = await axiosInstance.get(`/pdf/pdfs/${id}`);
-        console.log("pdfs",response.data.data);
         dispatch(getAllPdf({pdfs:response.data.data}))
 
       } catch (error) {
-        console.log(error)
+        toast.error("something went wrong on server")
       }
       finally{
         setLoading(false)
@@ -42,7 +42,7 @@ const AllPdf = () => {
 
 
   if(loading){
-    return <Loading text="Loading your pdf's"/>
+    return <div className='absolute top-[105px] right-0 left-0 z-40'><Loading text="Loading your pdf's"/></div>
   }
 
   return (
@@ -54,7 +54,7 @@ const AllPdf = () => {
           :
           <>
        { pdf?.map((item) => (
-            <Pdf {...item}/>
+            <Pdf {...item} key={item?._id} />
             )
             )}
           </>

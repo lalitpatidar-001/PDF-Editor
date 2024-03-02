@@ -26,6 +26,7 @@ const  Register = () => {
     password: "",
     confirmPassword: ""
   })
+  const [loading ,setLoading] = useState(false)
 
   const handleOnChange=(e)=>{
     const{name,value}= e.target
@@ -34,8 +35,8 @@ const  Register = () => {
   const handleFormSubmit = async (e)=>{
     e.preventDefault()
       try {
+        setLoading(true)
         const response = await axiosInstance.post("/auth/register",formData)
-        console.log(response)
         if(response.status===201){
           toast.success("User Register Succesully, Please Login!")
         }
@@ -53,6 +54,9 @@ const  Register = () => {
         else{
           toast.error("something went wrong on server")
         }
+      }
+      finally{
+        setLoading(false)
       }
   }
   
@@ -102,7 +106,7 @@ const  Register = () => {
           required={true}
         />
 
-        <Button type="submit" title="Register" fullWidth={true} />
+        <Button loading={loading} type="submit" title="Register" fullWidth={true} />
       </form>
       <AuthActions text="Already a User? " path='/auth/login' pageName="Login Here"/>
     </div>

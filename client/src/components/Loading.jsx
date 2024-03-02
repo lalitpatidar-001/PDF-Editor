@@ -7,9 +7,9 @@ import CircularProgress from '@mui/joy/CircularProgress';
     * take a text props to display a dynamic loading indicator 
     * if text props is null display default text
 */
-const Loading = ({text}) => {
+const Loading = ({text,fit}) => {
   return (
-    <div className='flex flex-col justify-center items-center h-screen w-full'>
+    <div className={`flex  justify-center items-center ${fit?"h-fit flex-row":"h-screen flex-col"}   w-full`}>
         <CircularProgress color="primary" />
         <span>{text?text:"Loading..."}</span>
     </div>

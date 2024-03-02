@@ -38,7 +38,7 @@ const ConfirmDialog = ({openDialog ,setOpenDialog}) => {
             >
                 <DialogTitle className='text-blue-600'>Instruction</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
+                    <div id="alert-dialog-slide-description">
                         <div className='flex flex-col gap-2'>
                             <span className='text-xl text-black'>How extracted pdf will be arrange?</span>
                             <div className='flex flex-col gap-2'>
@@ -46,7 +46,7 @@ const ConfirmDialog = ({openDialog ,setOpenDialog}) => {
                                 <span><h1 className='font-bold'>2. Arrange In Order-</h1>pages will arrange in order of their sequence</span>
                             </div>
                         </div>
-                    </DialogContentText>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>

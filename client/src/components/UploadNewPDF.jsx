@@ -56,7 +56,6 @@ const UploadNewPDF = () => {
             } catch (error) {
                 const status = error.response.status;
                 const data = error.response.data;
-                console.log(error)
                 if (status === 404 && data.message === "pdf file not found") {
                     toast.error("PDf Not found, please upload a valid pdf file")
                 }

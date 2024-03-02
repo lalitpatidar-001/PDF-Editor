@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../axios';
+import axiosInstance, { STATIC_PATH } from '../axios';
 import { Document, Page } from 'react-pdf';
 import { PDFDocument } from 'pdf-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,7 +59,6 @@ const EditPdf = ({ id }) => {
     // hadle radio button toggle for pdf order re-arrange
     const handleSequenceChange = (e) => {
         setIsInSequence(e.target.value);
-        console.log(e.target.value)
     }
 
     // Update page width when window is resized
@@ -76,11 +75,10 @@ const EditPdf = ({ id }) => {
         async function getPdf(id) {
             try {
                 const response = await axiosInstance.get(`/pdf/${id}`);
-                const path = "http://localhost:5000/api/pdf/" + response.data.data.path;
+                const path = STATIC_PATH + response.data.data.path;
                 setPdf(path);
                 setName(response.data.data.name);
             } catch (error) {
-                console.log(error);
                 toast.error("something went wrong ")
             }
         }
@@ -92,8 +90,8 @@ const EditPdf = ({ id }) => {
         try {
             setLoading(true)
             if (!generatedPdf) {
-                console.error('No PDF data available to save.');
-                return;
+
+                return toast.success("Error , please generate pdf before saving")
             }
             const pdfBlob = new Blob([generatedPdf], { type: 'application/pdf' })
             const response = await axiosInstance.post(`/pdf/upload/${userId}`, { pdfFile: pdfBlob, name }, {
@@ -106,9 +104,7 @@ const EditPdf = ({ id }) => {
                 dispatch(updatePdf({ pdf: response.data.data }))
                 navigate("/")
             }
-            console.log(response);
         } catch (error) {
-            console.error('Error saving PDF:', error);
             if (error.response.status === 404) {
                 toast.error("Pdf file not found, can not save");
             }
@@ -125,13 +121,12 @@ const EditPdf = ({ id }) => {
 
     // handle checkbox  click for selected pages 
     const handleCheckBoxClick = (index) => {
-        console.log(index)
         if (selectedPages.includes(index)) {
             setSelectedPages(prev => prev.filter(page => page !== index)); // removing if already checked
-        } else {
+        } 
+        else {
             setSelectedPages(prev => [...prev, index]); // updating state with new selected index
         }
-        console.log(selectedPages)
     }
 
 
@@ -152,7 +147,6 @@ const EditPdf = ({ id }) => {
             // getting each selected page and coping it to new pdf doc
             for (const pageIndex of selectedPages) {
                 const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [pageIndex - 1]);
-                console.log("copiedPage", copiedPage)
                 newPdfDoc.addPage(copiedPage);
             }
             const newPdfBytes = await newPdfDoc.save();
@@ -163,7 +157,6 @@ const EditPdf = ({ id }) => {
             setGeneratedPdfUrl(pdfUrl);
             setGeneratedPdf(pdfBlob)
         } catch (error) {
-            console.error('Error fetching PDF:', error);
             toast.error("error in generating extracted pdf, try again");
         }
         finally {
@@ -183,7 +176,7 @@ const EditPdf = ({ id }) => {
             <div className='relative'>
 
                 {/* display if no page is selected  */}
-                {selectedPages.length === 0 && <span className='fixed top-[55px]  z-50  text-red-500 bg-white p-1 shadow-lg rounded'>select at least one page to extract</span>}
+                {selectedPages.length === 0 && !loading && <span className='fixed top-[55px] right-0  z-50  text-red-500 bg-white p-1 shadow-lg rounded'>select at least one page to extract</span>}
 
                 {/* display nav bar with option if atleast one page is selected */}
                 {selectedPages.length > 0 &&
@@ -213,7 +206,7 @@ const EditPdf = ({ id }) => {
                                 <div className='flex gap-2 mt-[40px]  flex-wrap min-h-screen w-full justify-center '>
 
                                     {Array.from(new Array(numPages), (el, index) => (
-                                        <div className='relative h-fit w-fit'>
+                                        <div className='relative h-fit w-fit' key={`page_${index + 1}`} >
                                             <span className='absolute right-1 z-40  text-gray-500'>{index + 1}</span>
 
                                             <Page className="border-blue-300 border w-fit h-[200px] overflow-hidden"
@@ -227,7 +220,9 @@ const EditPdf = ({ id }) => {
                                             <input
                                                 onChange={() => handleCheckBoxClick(index + 1)}
                                                 checked={selectedPages.includes(index + 1)}
-                                                type='checkbox' className='static h-[20px] bottom-1 right-1 cursor-pointer   border-blue-500 border-blue-2  bg-red-500' />
+                                                type='checkbox' className='absolute h-[20px] 
+                                                   bottom-1 right-1 
+                                                  cursor-pointer   border-blue-500 border-blue-2  ' />
                                         </div>
                                     ))}
                                 </div>

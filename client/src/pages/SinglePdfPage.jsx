@@ -33,12 +33,10 @@ const SinglePdfPage = () => {
             try {
                 setLoading(true);
                 const response = await axiosInstance.get(`/pdf/${id}`);
-                console.log(response);
                 if(response.status === 200){
                     setPdf(response.data.data);
                 }
             } catch (error) {
-                console.log(error)
                 if(error.response.status === 404){
                     toast.error("pdf not found!")
                     navigate("/")
