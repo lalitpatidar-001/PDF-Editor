@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.694f2c65.css",
+    "main.js": "/static/js/main.ce5a79cc.js",
+    "static/js/453.258b012d.chunk.js": "/static/js/453.258b012d.chunk.js",
+    "static/media/pdf.worker.min.js": "/static/media/pdf.worker.min.5eb9c1fd9d312403ac9a.js",
+    "static/media/pdf-logo.png": "/static/media/pdf-logo.aea6ab0126c7ba89db47.png",
+    "index.html": "/index.html",
+    "main.694f2c65.css.map": "/static/css/main.694f2c65.css.map",
+    "main.ce5a79cc.js.map": "/static/js/main.ce5a79cc.js.map",
+    "453.258b012d.chunk.js.map": "/static/js/453.258b012d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.694f2c65.css",
+    "static/js/main.ce5a79cc.js"
+  ]
+}
